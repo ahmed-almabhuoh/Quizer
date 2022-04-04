@@ -92,7 +92,13 @@ class RoomController extends Controller
      */
     public function edit(Room $room)
     {
+        if (auth('teacher')->user()->id != $room->teacher_id) {
+            return redirect()->route('rooms.index');
+        }
         //
+        return response()->view('cms.room.edit', [
+            'room' => $room,
+        ]);
     }
 
     /**
@@ -104,7 +110,31 @@ class RoomController extends Controller
      */
     public function update(Request $request, Room $room)
     {
+        if (auth('teacher')->user()->id != $room->teacher_id) {
+            return redirect()->route('rooms.index');
+        }
         //
+        $validator = Validator($request->all(), [
+            'name' => 'required|string|min:3|max:50',
+            'description' => 'nullable',
+            'active' => 'required|boolean',
+        ]);
+        //
+        if (!$validator->fails()) {
+            $room->name = $request->get('name');
+            $room->description = $request->get('description');
+            $room->active = $request->get('active');
+            $room->teacher_id = auth('teacher')->user()->id;
+            $isUpdated = $room->save();
+
+            return response()->json([
+                'message' => $isUpdated ? 'Room updated successfully' : 'Faild to update room',
+            ], $isUpdated ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+        }else {
+            return response()->json([
+                'message' => $validator->getMessageBag()->first(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
@@ -115,6 +145,9 @@ class RoomController extends Controller
      */
     public function destroy(Room $room)
     {
+        if (auth('teacher')->user()->id != $room->teacher_id) {
+            return redirect()->route('rooms.index');
+        }
         //
     }
 }

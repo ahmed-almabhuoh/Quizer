@@ -36,16 +36,25 @@
                                     @endphp
                                     @foreach ($rooms as $room)
                                         <tr>
-                                            <td>{{$no . '.'}}</td>
-                                            <td>{{$room->name}}</td>
-                                            <td>{{$room->description}}</td>
-                                            <td>{{$room->code}}</td>
+                                            <td>{{ $no . '.' }}</td>
+                                            <td>{{ $room->name }}</td>
+                                            <td>{{ $room->description }}</td>
+                                            <td>{{ $room->code }}</td>
                                             {{-- <td>
                                                 <div class="progress progress-xs">
-                                                    <div class="progress-bar @if($room->status_room) progress-bar-success @else progress-bar-danager @endif" style="width: 55%"></div>
+                                                    <div class="progress-bar @if ($room->status_room) progress-bar-success @else progress-bar-danager @endif" style="width: 55%"></div>
                                                 </div>s
                                             </td> --}}
-                                            <td></td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a href="{{route('rooms.edit', $room->id)}}" class="btn btn-info">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                    <button type="button" class="btn btn-danger">
+                                                        <i class="fas fa-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
                                         </tr>
                                         @php
                                             $no++;

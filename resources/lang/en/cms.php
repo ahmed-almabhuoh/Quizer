@@ -18,4 +18,5 @@ return [
     'add' => 'Add',
     'quizer' => 'Quizer',
     'code' => 'Code', 
+    'update' => 'Update'
 ];
