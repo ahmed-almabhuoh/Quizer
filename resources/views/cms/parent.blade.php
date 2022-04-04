@@ -234,11 +234,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </li>
                             </ul>
                         </li>
+                        <li class="nav-header">Humman Resource</li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>
-                                    {{__('cms.room')}}
+                                    {{ __('cms.room') }}
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
@@ -246,16 +247,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 <li class="nav-item">
                                     <a href="#" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__('cms.create')}}</p>
+                                        <p>{{ __('cms.create') }}</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="{{route('rooms.index')}}" class="nav-link">
+                                    <a href="{{ route('rooms.index') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>{{__('cms.index')}}</p>
+                                        <p>{{ __('cms.index') }}</p>
                                     </a>
                                 </li>
                             </ul>
+                        </li>
+
+                        <li class="nav-header">Settings</li>
+                        <li class="nav-item">
+                            <a href="{{route('logout')}}" class="nav-link">
+                                <i class="fas fa-circle nav-icon"></i>
+                                <p>Logout</p>
+                            </a>
                         </li>
                     </ul>
                 </nav>

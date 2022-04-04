@@ -49,4 +49,12 @@ class AuthController extends Controller
             ], Response::HTTP_BAD_REQUEST);
         }
     }
+
+    public function logout (Request $request) {
+        if (auth('teacher')->check()) {
+            auth('teacher')->user()->logout;
+            $request->session()->invalidate();
+            return redirect()->route('login', 'teacher');
+        }
+    }
 }

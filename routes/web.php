@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::prefix('cms')->group(function () {
+Route::prefix('cms')->middleware('guest:teacher')->group(function () {
     Route::get('{guard}/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('login', [AuthController::class, 'login']);
 });
@@ -27,4 +27,6 @@ Route::prefix('cms')->group(function () {
 Route::prefix('/cms/admin')->middleware('auth:teacher')->group(function () {
     Route::view('/', 'cms.index')->name('dashboard');
     Route::resource('/rooms', RoomController::class);
+
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
