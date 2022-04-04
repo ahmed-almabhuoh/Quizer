@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Room;
+use Dotenv\Validator;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class RoomController extends Controller
 {
@@ -17,7 +19,8 @@ class RoomController extends Controller
         //
         $rooms = Room::where([
             ['active', 1],
-        ])->get();
+            ['teacher_id', auth('teacher')->user()->id]
+        ])->latest('created_at')->get();
         return response()->view('cms.room.index', [
             'rooms' => $rooms,
         ]);
@@ -31,6 +34,7 @@ class RoomController extends Controller
     public function create()
     {
         //
+        return response()->view('cms.room.create');
     }
 
     /**
@@ -41,7 +45,28 @@ class RoomController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator($request->all(), [
+            'name' => 'required|string|min:3|max:50',
+            'description' => 'nullable',
+            'active' => 'required|boolean',
+        ]);
         //
+        if (!$validator->fails()) {
+            $room = new Room();
+            $room->name = $request->get('name');
+            $room->description = $request->get('description');
+            $room->active = $request->get('active');
+            $room->teacher_id = auth('teacher')->user()->id;
+            $isSaved = $room->save();
+
+            return response()->json([
+                'message' => $isSaved ? 'Room created successfully' : 'Faild to create room',
+            ], $isSaved ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+        }else {
+            return response()->json([
+                'message' => $validator->getMessageBag()->first(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**

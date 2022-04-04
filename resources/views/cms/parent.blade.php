@@ -18,6 +18,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('quizer/dist/css/adminlte.min.css') }}">
 
+    <!-- Toastr -->
+    <link rel="stylesheet" href="{{ asset('quizer/plugins/toastr/toastr.min.css') }}">
+
     @yield('styles')
 </head>
 
@@ -234,7 +237,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                 </li>
                             </ul>
                         </li>
-                        <li class="nav-header">Humman Resource</li>
+                        <li class="nav-header">{{__('cms.humman_resource')}}</li>
                         <li class="nav-item">
                             <a href="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
@@ -245,7 +248,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                             <ul class="nav nav-treeview" style="display: none;">
                                 <li class="nav-item">
-                                    <a href="#" class="nav-link">
+                                    <a href="{{route('rooms.create')}}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>{{ __('cms.create') }}</p>
                                     </a>
@@ -259,11 +262,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </ul>
                         </li>
 
-                        <li class="nav-header">Settings</li>
+                        <li class="nav-header">{{__('cms.settings')}}</li>
                         <li class="nav-item">
                             <a href="{{route('logout')}}" class="nav-link">
                                 <i class="fas fa-circle nav-icon"></i>
-                                <p>Logout</p>
+                                <p>{{__('cms.logout')}}</p>
                             </a>
                         </li>
                     </ul>
@@ -330,6 +333,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="{{ asset('quizer/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('quizer/dist/js/adminlte.min.js') }}"></script>
+    {{-- Sweet Alert --}}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {{-- AXIOS LIBRARY --}}
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Toastr -->
+    <script src="{{ asset('quizer/plugins/toastr/toastr.min.js') }}"></script>
     @yield('scripts')
 </body>
 
