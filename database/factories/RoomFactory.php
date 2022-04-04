@@ -15,6 +15,9 @@ class RoomFactory extends Factory
     {
         return [
             //
+            'name' => $this->faker->word(),
+            'description' => $this->faker->word(),
+            'teacher_id' => '1',
         ];
     }
 }

@@ -15,6 +15,12 @@ class RoomController extends Controller
     public function index()
     {
         //
+        $rooms = Room::where([
+            ['active', 1],
+        ])->get();
+        return response()->view('cms.room.index', [
+            'rooms' => $rooms,
+        ]);
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RoomController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +19,12 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::prefix('/cms/admin')->group(function () {
+Route::prefix('cms')->group(function () {
+    Route::get('{guard}/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('login', [AuthController::class, 'login']);
+});
+
+Route::prefix('/cms/admin')->middleware('auth:teacher')->group(function () {
     Route::view('/', 'cms.index')->name('dashboard');
+    Route::resource('/rooms', RoomController::class);
 });

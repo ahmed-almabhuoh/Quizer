@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Hash;
 
 class TeacherFactory extends Factory
 {
@@ -15,6 +16,9 @@ class TeacherFactory extends Factory
     {
         return [
             //
+            'name' => 'Ahmed Almaboh',
+            'email' => 'az540546@gmail.com',
+            'password' => Hash::make('password'),
         ];
     }
 }

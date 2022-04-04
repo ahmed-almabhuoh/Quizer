@@ -5,4 +5,12 @@
 
 @section('styles')
     
-@endsection
+@endsection
+
+@section('content')
+    
+@endsection
+
+@section('scripts')
+    
+@endsection
