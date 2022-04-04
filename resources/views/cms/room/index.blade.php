@@ -47,10 +47,10 @@
                                             </td> --}}
                                             <td>
                                                 <div class="btn-group">
-                                                    <a href="{{route('rooms.edit', $room->id)}}" class="btn btn-info">
+                                                    <a href="{{ route('rooms.edit', $room->id) }}" class="btn btn-info">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-                                                    <button type="button" class="btn btn-danger">
+                                                    <button type="button" onclick="confirmDestroy({{$room->id}}, this)" class="btn btn-danger">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
                                                 </div>
@@ -63,16 +63,6 @@
                                 </tbody>
                             </table>
                         </div>
-                        <!-- /.card-body -->
-                        {{-- <div class="card-footer clearfix">
-                            <ul class="pagination pagination-sm m-0 float-right">
-                                <li class="page-item"><a class="page-link" href="#">«</a></li>
-                                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item"><a class="page-link" href="#">»</a></li>
-                            </ul>
-                        </div> --}}
                     </div>
                     <!-- /.card -->
                 </div>
@@ -84,5 +74,50 @@
 @endsection
 
 @section('scripts')
+    <script>
+        function confirmDestroy(id, refranec) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    destroy(id, refranec);
+                }
+            });
+        }
 
+        function destroy(id, refranec) {
+            // cms/admin/rooms/{room} 
+            axios.delete('/cms/admin/rooms/' + id)
+                .then(function(response) {
+                    // handle success
+                    console.log(response);
+                    refranec.closest('tr').remove();
+                    showDeletingResult(response.data);
+                })
+                .catch(function(error) {
+                    // handle error
+                    console.log(error);
+                    showDeletingResult(error.response.data);
+                })
+                .then(function() {
+                    // always executed
+                });
+        }
+
+        function showDeletingResult(data) {
+            Swal.fire({
+                icon: data.icon,
+                title: data.title,
+                text: data.text,
+                showConfirmButton: false,
+                timer: 2000
+            });
+        }
+    </script>
 @endsection

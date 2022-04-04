@@ -149,5 +149,18 @@ class RoomController extends Controller
             return redirect()->route('rooms.index');
         }
         //
+        if ($room->delete()) {
+            return response()->json([
+                'icon' => 'success',
+                'title' => 'Deleted',
+                'text' => 'Room deleted successfully',
+            ], Response::HTTP_OK);
+        }else {
+            return response()->json([
+                'icon' => 'error',
+                'title' => 'Faild',
+                'text' => 'Faild to delete room!',
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 }
