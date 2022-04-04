@@ -16,4 +16,6 @@ return [
     'update_room' => 'Update Room',
     'active' => 'Active',
     'add' => 'Add',
+    'quizer' => 'Quizer',
+    'code' => 'Code', 
 ];

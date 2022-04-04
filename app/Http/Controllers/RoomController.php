@@ -34,7 +34,10 @@ class RoomController extends Controller
     public function create()
     {
         //
-        return response()->view('cms.room.create');
+        $code = uniqid();
+        return response()->view('cms.room.create', [
+            'code' => $code,
+        ]);
     }
 
     /**
@@ -55,6 +58,7 @@ class RoomController extends Controller
             $room = new Room();
             $room->name = $request->get('name');
             $room->description = $request->get('description');
+            $room->code = $request->get('_code');
             $room->active = $request->get('active');
             $room->teacher_id = auth('teacher')->user()->id;
             $isSaved = $room->save();

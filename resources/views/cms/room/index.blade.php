@@ -25,6 +25,7 @@
                                         <th style="width: 10px">#</th>
                                         <th>{{ __('cms.name') }}</th>
                                         <th>{{ __('cms.description') }}</th>
+                                        <th>{{ __('cms.code') }}</th>
                                         {{-- <th style="width: 40px">{{ __('cms.status') }}</th> --}}
                                         <th>{{ __('cms.settings') }}</th>
                                     </tr>
@@ -38,6 +39,7 @@
                                             <td>{{$no . '.'}}</td>
                                             <td>{{$room->name}}</td>
                                             <td>{{$room->description}}</td>
+                                            <td>{{$room->code}}</td>
                                             {{-- <td>
                                                 <div class="progress progress-xs">
                                                     <div class="progress-bar @if($room->status_room) progress-bar-success @else progress-bar-danager @endif" style="width: 55%"></div>

@@ -31,6 +31,10 @@
                                     <label for="description">{{ __('cms.description') }}</label>
                                     <input type="text" class="form-control" id="description" placeholder="Password">
                                 </div>
+                                <div class="form-group">
+                                    <label for="code">{{ __('cms.code') }}</label>
+                                    <input type="text" class="form-control" id="code" placeholder="Room Code" value="{{$code}}" readonly>
+                                </div>
                                 <div class="form-check">
                                     <input type="checkbox" class="form-check-input" id="active">
                                     <label class="form-check-label" for="active">{{ __('cms.active') }}</label>
@@ -39,7 +43,7 @@
                             <!-- /.card-body -->
 
                             <div class="card-footer">
-                                <button type="button" onclick="applyAddingRoom()" class="btn btn-primary">{{ __('cms.add') }}</button>
+                                <button type="button" onclick="applyAddingRoom('{{$code}}')" class="btn btn-primary">{{ __('cms.add') }}</button>
                             </div>
                         </form>
                     </div>
@@ -53,16 +57,17 @@
 
 @section('scripts')
     <script>
-        function applyAddingRoom() {
+        function applyAddingRoom(code) {
             axios.post('/cms/admin/rooms', {
                     name: document.getElementById('name').value,
                     description: document.getElementById('description').value,
                     active: document.getElementById('active').checked ? true : false,
+                    _code: code,
                 })
                 .then(function(response) {
                     // handle success
                     console.log(response);
-                    window.location.href = '/cms/admin/rooms';
+                    // window.location.href = '/cms/admin/rooms';
                     document.getElementById('create-form').reset();
                     toastr.success(response.data.message);
                 })

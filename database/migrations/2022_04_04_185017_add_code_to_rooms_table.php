@@ -15,6 +15,7 @@ class AddCodeToRoomsTable extends Migration
     {
         Schema::table('rooms', function (Blueprint $table) {
             //
+            $table->string('code', 20)->after('description');
         });
     }
 
@@ -27,6 +28,7 @@ class AddCodeToRoomsTable extends Migration
     {
         Schema::table('rooms', function (Blueprint $table) {
             //
+            $table->dropColumn('code');
         });
     }
 }
