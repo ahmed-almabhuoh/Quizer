@@ -18,5 +18,12 @@ return [
     'add' => 'Add',
     'quizer' => 'Quizer',
     'code' => 'Code', 
-    'update' => 'Update'
+    'update' => 'Update',
+    'change_password' => 'Change Password',
+    'current_password' => 'Current Password',
+    'new_password' => 'New Password', 
+    'confirmation_password' => 'Confirmation Password',
+    'teahcer' => 'Teacher',
+    'student' => 'Student',
+    'password' => 'Password',
 ];

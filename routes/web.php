@@ -28,5 +28,9 @@ Route::prefix('/cms/admin')->middleware('auth:teacher')->group(function () {
     Route::view('/', 'cms.index')->name('dashboard');
     Route::resource('/rooms', RoomController::class);
 
+    // Change password
+    Route::get('/change-password', [AuthController::class, 'showChangePassword'])->name('change.password');
+    Route::post('/change-password', [AuthController::class, 'changePassword']);
+
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
