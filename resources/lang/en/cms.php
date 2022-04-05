@@ -31,4 +31,10 @@ return [
     'email' => 'Email',
     'update_student' => 'Update Student',
     'edit' => 'Edit',
+    'quizzes' => 'Quizzes',
+    'quiz' => 'Quiz',
+    'management' => 'Management',
+    'title' => 'Title',
+    'mark' => 'Mark',
+    'for_room' => 'For Room',
 ];

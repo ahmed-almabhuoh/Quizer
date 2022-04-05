@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\QuizController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,7 @@ Route::prefix('/cms/admin')->middleware('auth:teacher')->group(function () {
     Route::view('/', 'cms.index')->name('dashboard');
     Route::resource('/rooms', RoomController::class);
     Route::resource('/students', StudentController::class);
+    Route::resource('/quizzes', QuizController::class);
 
     // Change password
     Route::get('/change-password', [AuthController::class, 'showChangePassword'])->name('change.password');

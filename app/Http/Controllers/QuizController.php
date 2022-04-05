@@ -14,7 +14,16 @@ class QuizController extends Controller
      */
     public function index()
     {
+        $quizzes = Quiz::where([
+            ['teacher_id', auth('teacher')->user()->id],
+            ['active', 1],
+        ])
+        ->with('room')
+        ->get();
         //
+        return response()->view('cms.quiz.index', [
+            'quizzes' => $quizzes,
+        ]);
     }
 
     /**
