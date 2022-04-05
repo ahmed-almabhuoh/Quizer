@@ -147,6 +147,22 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
+        if ($student->teacher_id != auth('teacher')->user()->id) {
+            return redirect()->route('students.index');
+        }
         //
+        if ($student->delete()) {
+            return response()->json([
+                'icon' => 'success',
+                'title' => 'Deleted',
+                'text' => 'Student deleted successfully',
+            ], Response::HTTP_OK);
+        }else {
+            return response()->json([
+                'icon' => 'error',
+                'title' => 'Faild',
+                'text' => 'Faild to delete student',
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 }
