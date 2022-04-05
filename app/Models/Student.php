@@ -12,4 +12,8 @@ class Student extends Model
     public function marks () {
         return $this->hasMany(Mark::class, 'student_id', 'id');
     }
+
+    public function teacher () {
+        return $this->belongsTo(Teacher::class, 'teacher_id', 'id');
+    }
 }

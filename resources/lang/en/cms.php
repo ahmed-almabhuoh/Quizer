@@ -26,4 +26,7 @@ return [
     'teahcer' => 'Teacher',
     'student' => 'Student',
     'password' => 'Password',
+    'add_student' => 'Add Student',
+    'students' => 'Students',
+    'email' => 'Email',
 ];

@@ -15,6 +15,13 @@ class StudentController extends Controller
     public function index()
     {
         //
+        $students = Student::where([
+            ['teacher_id', auth('teacher')->user()->id],
+            ['active', '1'],
+        ])->get();
+        return response()->view('cms.student.index', [
+            'students' => $students,
+        ]);
     }
 
     /**

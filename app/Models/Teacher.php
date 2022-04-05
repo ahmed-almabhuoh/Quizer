@@ -17,4 +17,8 @@ class Teacher extends Authenticatable
     public function quizzes () {
         return $this->hasMany(Quiz::class, 'teacher_id', 'id');
     }
+
+    public function students () {
+        return $this->hasMany(Student::class, 'teacher_id', 'id');
+    }
 }
