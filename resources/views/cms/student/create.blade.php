@@ -1,7 +1,7 @@
 @extends('cms.parent')
-@section('title', __('cms.create_room'))
-@section('big-title', __('cms.room'))
-@section('small-title', __('cms.room'))
+@section('title', __('cms.add_student'))
+@section('big-title', __('cms.add_student'))
+@section('small-title', __('cms.add_student'))
 @section('location', __('cms.create'))
 
 @section('styles')
@@ -17,7 +17,7 @@
                     <!-- general form elements -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">{{ __('cms.create_room') }}</h3>
+                            <h3 class="card-title">{{ __('cms.add_student') }}</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
@@ -28,22 +28,18 @@
                                     <input type="text" class="form-control" id="name" placeholder="Enter email">
                                 </div>
                                 <div class="form-group">
-                                    <label for="description">{{ __('cms.description') }}</label>
-                                    <input type="text" class="form-control" id="description" placeholder="Password">
+                                    <label for="email">{{ __('cms.email') }}</label>
+                                    <input type="email" class="form-control" id="email" placeholder="Enter student email">
                                 </div>
                                 <div class="form-group">
-                                    <label for="code">{{ __('cms.code') }}</label>
-                                    <input type="text" class="form-control" id="code" placeholder="Room Code" value="{{$code}}" readonly>
-                                </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="active" checked>
-                                    <label class="form-check-label" for="active">{{ __('cms.active') }}</label>
+                                    <label for="password">{{ __('cms.password') }}</label>
+                                    <input type="text" class="form-control" id="password" placeholder="Enter student password" value="{{$password}}">
                                 </div>
                             </div>
                             <!-- /.card-body -->
 
                             <div class="card-footer">
-                                <button type="button" onclick="applyAddingRoom('{{$code}}')" class="btn btn-primary">{{ __('cms.add') }}</button>
+                                <button type="button" onclick="applyAddingStudent()" class="btn btn-primary">{{ __('cms.add') }}</button>
                             </div>
                         </form>
                     </div>
@@ -57,17 +53,16 @@
 
 @section('scripts')
     <script>
-        function applyAddingRoom(code) {
-            axios.post('/cms/admin/rooms', {
+        function applyAddingStudent() {
+            axios.post('/cms/admin/students', {
                     name: document.getElementById('name').value,
-                    description: document.getElementById('description').value,
-                    active: document.getElementById('active').checked ? true : false,
-                    _code: code,
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('password').value,
                 })
                 .then(function(response) {
                     // handle success
                     console.log(response);
-                    window.location.href = '/cms/admin/rooms';
+                    window.location.href = '/cms/admin/students';
                     document.getElementById('create-form').reset();
                     toastr.success(response.data.message);
                 })
