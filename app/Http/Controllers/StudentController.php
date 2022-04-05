@@ -6,6 +6,7 @@ use App\Models\Student;
 use Dotenv\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpFoundation\Response;
 
 class StudentController extends Controller
@@ -51,7 +52,7 @@ class StudentController extends Controller
     {
         $validator = Validator($request->all(), [
             'name' => 'required|string|min:3|max:50',
-            'email' => 'required|string|min:3|max:50',
+            'email' => 'required|string|min:3|max:50|unique:students,email',
             'password' => 'required|string|min:8|max:50'
         ]);
         //
@@ -59,7 +60,7 @@ class StudentController extends Controller
             $student = new Student();
             $student->name = $request->get('name');
             $student->email = $request->get('email');
-            $student->password = $request->get('password');
+            $student->password = Hash::make($request->get('password'));
             $student->teacher_id = auth('teacher')->user()->id;
             $isSaved = $student->save();
 
@@ -81,7 +82,7 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        //
+        
     }
 
     /**
@@ -92,7 +93,13 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
+        if ($student->teacher_id != auth('teacher')->user()->id) {
+            return redirect()->route('students.index');
+        }
         //
+        return response()->view('cms.student.edit', [
+            'student' => $student,
+        ]);
     }
 
     /**
@@ -104,7 +111,32 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
+        if ($student->teacher_id != auth('teacher')->user()->id) {
+            return redirect()->route('students.index');
+        }
+        $validator = Validator($request->all(), [
+            'name' => 'required|string|min:3|max:50',
+            'email' => 'required|string|min:3|max:50|unique:students,email,' . $student->id,
+            'password' => 'required|string|min:8|max:50'
+        ]);
         //
+        if (!$validator->fails()) {
+            $student->name = $request->get('name');
+            $student->email = $request->get('email');
+            if ($request->get('password') != 'password') {
+                $student->password = Hash::make($request->get('password'));
+            }
+            $student->teacher_id = auth('teacher')->user()->id;
+            $isSaved = $student->save();
+
+            return response()->json([
+                'message' => $isSaved ? 'Student updated successfully' : 'Faild to update student',
+            ], $isSaved ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+        }else {
+            return response()->json([
+                'message' => $validator->getMessageBag()->first(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**

@@ -29,4 +29,6 @@ return [
     'add_student' => 'Add Student',
     'students' => 'Students',
     'email' => 'Email',
+    'update_student' => 'Update Student',
+    'edit' => 'Edit',
 ];

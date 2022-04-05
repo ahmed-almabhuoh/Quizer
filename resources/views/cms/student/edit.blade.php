@@ -1,7 +1,7 @@
 @extends('cms.parent')
-@section('title', __('cms.update_room'))
-@section('big-title', __('cms.update_room'))
-@section('small-title', __('cms.update_room'))
+@section('title', __('cms.update_student'))
+@section('big-title', __('cms.update_student'))
+@section('small-title', __('cms.update_student'))
 @section('location', __('cms.update'))
 
 @section('styles')
@@ -17,33 +17,29 @@
                     <!-- general form elements -->
                     <div class="card card-primary">
                         <div class="card-header">
-                            <h3 class="card-title">{{ __('cms.update_room') }}</h3>
+                            <h3 class="card-title">{{ __('cms.update_student') }}</h3>
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form>
+                        <form id="create-form">
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="name">{{ __('cms.name') }}</label>
-                                    <input type="text" class="form-control" id="name" value="{{$room->name}}" placeholder="Enter email">
+                                    <input type="text" class="form-control" id="name" placeholder="Enter student name" value="{{$student->name}}">
                                 </div>
                                 <div class="form-group">
-                                    <label for="description">{{ __('cms.description') }}</label>
-                                    <input type="text" class="form-control" id="description" value="{{$room->description}}" placeholder="Enter room description">
+                                    <label for="email">{{ __('cms.email') }}</label>
+                                    <input type="email" class="form-control" id="email" placeholder="Enter student email" value="{{$student->email}}">
                                 </div>
-                                <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="active"
-                                        @if ($room->active)
-                                            checked
-                                        @endif
-                                    >
-                                    <label class="form-check-label" for="active">{{ __('cms.active') }}</label>
+                                <div class="form-group">
+                                    <label for="password">{{ __('cms.password') }} 'Optional'</label>
+                                    <input type="text" class="form-control" id="password" placeholder="Enter new password">
                                 </div>
                             </div>
                             <!-- /.card-body -->
 
                             <div class="card-footer">
-                                <button type="button" onclick="applyUpdatingRoom({{$room->id}})" class="btn btn-primary">{{ __('cms.add') }}</button>
+                                <button type="button" onclick="applyEditingStudent({{$student->id}})" class="btn btn-primary">{{ __('cms.edit') }}</button>
                             </div>
                         </form>
                     </div>
@@ -57,17 +53,17 @@
 
 @section('scripts')
     <script>
-        function applyUpdatingRoom(id) {
-            axios.put('/cms/admin/rooms/' + id, {
+        function applyEditingStudent(id) {
+            axios.put('/cms/admin/students/' + id, {
                     name: document.getElementById('name').value,
-                    description: document.getElementById('description').value,
-                    active: document.getElementById('active').checked ? true : false,
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('password').value == '' ? 'password' : document.getElementById('password').value,
                 })
                 .then(function(response) {
                     // handle success
                     console.log(response);
-                    window.location.href = '/cms/admin/rooms';
-                    // document.getElementById('update-form').reset();
+                    window.location.href = '/cms/admin/students';
+                    document.getElementById('create-form').reset();
                     toastr.success(response.data.message);
                 })
                 .catch(function(error) {
