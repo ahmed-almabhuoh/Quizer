@@ -42,4 +42,5 @@ return [
     'duration' => 'Duration',
     'from' => 'From',
     'to' => 'To',
+    'update_quiz' => 'Update Quiz',
 ];

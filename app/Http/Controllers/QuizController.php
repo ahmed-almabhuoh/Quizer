@@ -107,7 +107,18 @@ class QuizController extends Controller
      */
     public function edit(Quiz $quiz)
     {
+        if ($quiz->teacher_id != auth('teacher')->user()->id) {
+            return redirect()->route('quizzes.index');
+        }
         //
+        $rooms = Room::where([
+            ['active', 1],
+            ['teacher_id', auth('teacher')->user()->id],
+        ])->get();
+        return response()->view('cms.quiz.edit', [
+            'quiz' => $quiz,
+            'rooms' => $rooms,
+        ]);
     }
 
     /**
@@ -119,7 +130,38 @@ class QuizController extends Controller
      */
     public function update(Request $request, Quiz $quiz)
     {
+        if ($quiz->teacher_id != auth('teacher')->user()->id) {
+            return redirect()->route('quizzes.index');
+        }
+        $validator = Validator($request->all(), [
+            'title' => 'required|string|min:3|max:50',
+            'mark' => 'required|integer|min:1',
+            'time_in_minutes' => 'required|integer|min:1',
+            'time' => 'required|string|min:10',
+            'room' => 'required|integer|exists:rooms,id',
+            'active' => 'required|boolean',
+        ]);
         //
+        if (!$validator->fails()) {
+            $quiz->title = $request->get('title');
+            $quiz->description = $request->get('description');
+            $quiz->mark = $request->get('mark');
+            $quiz->time = $request->get('time_in_minutes');
+            $quiz->active = $request->get('active');
+            $quiz->teacher_id = auth('teacher')->user()->id;
+            $quiz->from = date_format(Carbon::make($request->get('time')),'y-m-d H:i');
+            $quiz->room_id = $request->get('room');
+            $quiz->percentage = 0.0;
+            $isSaved = $quiz->save();
+
+            return response()->json([
+                'message' => $isSaved ? 'Quiz updated successfully' : 'Faild to update quiz',
+            ], $isSaved ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+        }else {
+            return response()->json([
+                'message' => $validator->getMessageBag()->first(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
