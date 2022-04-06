@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
 use App\Models\Question;
 use App\Models\Quiz;
 use Dotenv\Validator;
@@ -63,9 +64,31 @@ class QuestionController extends Controller
                 $quiz->mark = Question::where('quiz_id', $request->get('_quiz_id'))->sum('degree');
                 $_isSaved = $quiz->save();
 
+                $arra_answer = array(
+                    $request->get('answer_1'),
+                    $request->get('answer_2'),
+                    $request->get('answer_3'),
+                    $request->get('answer_4'),
+                );
+
+                $_is_saved = false;
+                $count = 0;
+                foreach($arra_answer as $answer) {
+                    $new_answer = new Answer();
+                    $new_answer->answer = $answer;
+                    if ($count == $request->get('correct_answer')) {
+                        $new_answer->is_answer = 1;
+                    }else {
+                        $new_answer->is_answer = 0;
+                    }
+                    $new_answer->question_id = $question->id;
+                    $_is_saved = $new_answer->save();
+                    ++$count;
+                }
+
                 return response()->json([
-                    'message' => $_isSaved && $isSaved ? 'Question added successfully' : 'Faild to add question',
-                ], $_isSaved && $isSaved ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+                    'message' => $_isSaved && $isSaved && $_is_saved ? 'Question added successfully' : 'Faild to add question',
+                ], $_isSaved && $isSaved && $_is_saved ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
             }else {
                 return redirect()->route('quizzes.index');
             }

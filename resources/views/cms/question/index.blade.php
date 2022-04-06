@@ -12,14 +12,17 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
+                @php
+                    $no = 1;
+                @endphp
                 @foreach ($quiz->questions as $question)
                     <div class="col-lg-12">
                         <div class="card card-primary card-outline">
                             <div class="card-header">
-                                <h5 class="m-0">{{ $question->question }}</h5>
+                                <h5 class="m-0">{{ $no . '. '}}{{ $question->question }}</h5>
                             </div>
                             <div class="card-header">
-                                <h6 class="m-0">{{ $question->degree . ' Mark' }}</h6>
+                                <h6 class="m-0">{{ $question->degree . ' Marks' }}</h6>
                             </div>
                             <div class="card-body">
                                 <h6 class="card-title">{{ $question->description }}</h6>
@@ -31,6 +34,9 @@
                             </div>
                         </div>
                     </div>
+                    @php
+                        ++$no;
+                    @endphp
                 @endforeach
                 <!-- /.col-md-6 -->
             </div>
