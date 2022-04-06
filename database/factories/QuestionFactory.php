@@ -15,6 +15,10 @@ class QuestionFactory extends Factory
     {
         return [
             //
+            'question' => $this->faker->word(),
+            'degree' => $this->faker->numberBetween(1, 10),
+            'description' => $this->faker->word(),
+            'quiz_id' => 15,
         ];
     }
 }

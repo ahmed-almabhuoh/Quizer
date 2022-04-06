@@ -43,4 +43,8 @@ return [
     'from' => 'From',
     'to' => 'To',
     'update_quiz' => 'Update Quiz',
+    'add_question' => 'Add Question',
+    'questions' => 'Questions',
+    'question' => 'Question',
+    'degree' => 'Degree',
 ];

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuizController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\StudentController;
@@ -31,6 +32,13 @@ Route::prefix('/cms/admin')->middleware('auth:teacher')->group(function () {
     Route::resource('/rooms', RoomController::class);
     Route::resource('/students', StudentController::class);
     Route::resource('/quizzes', QuizController::class);
+    Route::resource('/questions', QuestionController::class);
+
+    // To get quiz with its questions
+    Route::get('/quiz/{id}/questions', [QuizController::class, 'getToQuizQuestions'])->name('quiz.questions');
+
+    // Add questions to quiz
+    Route::get('/quiz/{id}/add-questions', [QuizController::class, 'addQuestionToQuiz'])->name('add.questions');
 
     // Change password
     Route::get('/change-password', [AuthController::class, 'showChangePassword'])->name('change.password');

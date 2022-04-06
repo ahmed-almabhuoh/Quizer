@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Question;
 use App\Models\Quiz;
 use App\Models\Room;
 use Carbon\Carbon;
@@ -188,6 +189,28 @@ class QuizController extends Controller
                 'title' => 'Faild!',
                 'text' => 'Quiz faild to romve.',
             ], Response::HTTP_OK);
+        }
+    }
+
+    public function addQuestionToQuiz ($id) {
+        $quiz = Quiz::where([
+            ['id', $id],
+            ['active', 1],
+            ['teacher_id', auth('teacher')->user()->id],
+        ])->first();
+        return response()->view('cms.question.create', [
+            'quiz' => $quiz,
+        ]);
+    }
+
+    public function getToQuizQuestions ($id) {
+        $quiz = Quiz::where('id', $id)->with('questions')->withCount('questions')->first();
+        if ($quiz->teacher_id != auth('teacher')->user()->id) {
+            return redirect()->route('quizzes.index');
+        }else {
+            return response()->view('cms.question.index', [
+                'quiz' => $quiz,
+            ]);
         }
     }
 }

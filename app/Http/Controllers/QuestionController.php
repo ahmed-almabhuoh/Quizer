@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Question;
+use App\Models\Quiz;
+use Dotenv\Validator;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class QuestionController extends Controller
 {
@@ -15,6 +18,7 @@ class QuestionController extends Controller
     public function index()
     {
         //
+        return response()->view('cms.question.index');
     }
 
     /**
@@ -35,7 +39,41 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator($request->all(), [
+            'question' => 'required|string|min:5|max:100',
+            'degree' => 'required|integer|min:1',
+            'active' => 'required|boolean',
+            '_quiz_id' => 'required|integer|exists:quizzes,id',
+        ]);
         //
+        if (!$validator->fails()) {
+            $question = new Question();
+            $question->question = $request->get('question');
+            $question->description = $request->get('description');
+            $question->degree = $request->get('degree');
+            $question->active = $request->get('active');
+            $question->quiz_id = $request->get('_quiz_id');
+            $isSaved = $question->save();
+
+            $quiz = Quiz::where([
+                ['teacher_id', auth('teacher')->user()->id],
+                ['id', $request->get('_quiz_id')],
+            ])->first();
+            if (!is_null($quiz)) {
+                $quiz->mark = Question::where('quiz_id', $request->get('_quiz_id'))->sum('degree');
+                $_isSaved = $quiz->save();
+
+                return response()->json([
+                    'message' => $_isSaved && $isSaved ? 'Question added successfully' : 'Faild to add question',
+                ], $_isSaved && $isSaved ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+            }else {
+                return redirect()->route('quizzes.index');
+            }
+        }else {
+            return response()->json([
+                'message' => $validator->getMessageBag()->first(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**

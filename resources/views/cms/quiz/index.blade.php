@@ -27,7 +27,7 @@
                                         <th>{{ __('cms.description') }}</th>
                                         <th>{{ __('cms.for_room') }}</th>
                                         <th>{{ __('cms.mark') }}</th>
-                                        <th>{{ __('cms.duration') }}</th>
+                                        <th>{{ __('cms.duration') . ' -m- ' }}</th>
                                         <th>{{ __('cms.from') }}</th>
                                         <th>{{ __('cms.settings') }}</th>
                                     </tr>
@@ -41,7 +41,7 @@
                                             <td>{{ $no . '.' }}</td>
                                             <td>{{ $quiz->title }}</td>
                                             <td>{{ $quiz->description }}</td>
-                                            <td>{{ $quiz->room->name }}</td>
+                                            <td>{{ $quiz->room->name ?? '' }}</td>
                                             <td>{{ $quiz->mark }}</td>
                                             <td>{{ $quiz->time }}</td>
                                             <td>{{ $quiz->from }}</td>
@@ -53,12 +53,23 @@
                                             </td> --}}
                                             <td>
                                                 <div class="btn-group">
-                                                    <a href="{{ route('quizzes.edit', $quiz->id) }}" class="btn btn-info">
+                                                    <a href="{{ route('quizzes.edit', $quiz->id) }}"
+                                                        class="btn btn-info">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
-                                                    <button type="button" onclick="confirmDestroy({{$quiz->id}}, this)" class="btn btn-danger">
+                                                    <button type="button"
+                                                        onclick="confirmDestroy({{ $quiz->id }}, this)"
+                                                        class="btn btn-danger">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
+                                                    <a href="{{ route('quiz.questions', $quiz->id) }}"
+                                                        class="btn btn-info">
+                                                        info
+                                                    </a>
+                                                    <br>
+                                                    <a type="button"
+                                                        href="{{route('add.questions', $quiz->id)}}"
+                                                        class="btn btn-block btn-outline-info btn-sm">Add</a>
                                                 </div>
                                             </td>
                                         </tr>
