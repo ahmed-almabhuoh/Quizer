@@ -26,7 +26,7 @@
                             </div>
                             <div class="card-header">
                                 @if (!is_null($question->description))
-                                    <h4>note:</h4>
+                                    <h4>note</h4>
                                     <h6 class="card-title">{{ $question->description }}</h6>
                                 @endif
                             </div>
