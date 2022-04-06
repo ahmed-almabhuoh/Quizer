@@ -19,18 +19,26 @@
                     <div class="col-lg-12">
                         <div class="card card-primary card-outline">
                             <div class="card-header">
-                                <h5 class="m-0">{{ $no . '. '}}{{ $question->question }}</h5>
+                                <h5 class="m-0">{{ $no . '. ' }}{{ $question->question }}</h5>
                             </div>
                             <div class="card-header">
                                 <h6 class="m-0">{{ $question->degree . ' Marks' }}</h6>
                             </div>
+                            <div class="card-header">
+                                @if (!is_null($question->description))
+                                    <h4>note:</h4>
+                                    <h6 class="card-title">{{ $question->description }}</h6>
+                                @endif
+                            </div>
                             <div class="card-body">
-                                <h6 class="card-title">{{ $question->description }}</h6>
-
-                                <p class="card-text">With supporting text below as a natural lead-in to additional
-                                    content.
-                                </p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                @foreach ($question->answers as $answer)
+                                    @if ($answer->is_answer)
+                                        <p style="background-color: green;color: white; padding: 5px;">
+                                            {{ $answer->answer }}</p>
+                                    @else
+                                        <p>{{ $answer->answer }}</p>
+                                    @endif
+                                @endforeach
                             </div>
                         </div>
                     </div>
