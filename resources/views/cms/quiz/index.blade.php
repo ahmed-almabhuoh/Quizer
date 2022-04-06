@@ -27,7 +27,8 @@
                                         <th>{{ __('cms.description') }}</th>
                                         <th>{{ __('cms.for_room') }}</th>
                                         <th>{{ __('cms.mark') }}</th>
-                                        <th>{{ __('cms.time_in_minutes') }}</th>
+                                        <th>{{ __('cms.duration') }}</th>
+                                        <th>{{ __('cms.from') }}</th>
                                         <th>{{ __('cms.settings') }}</th>
                                     </tr>
                                 </thead>
@@ -43,6 +44,8 @@
                                             <td>{{ $quiz->room->name }}</td>
                                             <td>{{ $quiz->mark }}</td>
                                             <td>{{ $quiz->time }}</td>
+                                            <td>{{ $quiz->from }}</td>
+                                            {{-- <td>{{ $quiz->time }}</td> --}}
                                             {{-- <td>
                                                 <div class="progress progress-xs">
                                                     <div class="progress-bar @if ($quiz->status_room) progress-bar-success @else progress-bar-danager @endif" style="width: 55%"></div>

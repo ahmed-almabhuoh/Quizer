@@ -130,6 +130,22 @@ class QuizController extends Controller
      */
     public function destroy(Quiz $quiz)
     {
+        if ($quiz->teacher_id != auth('teacher')->user()->id) {
+            return redirect()->route('quizzes.index');
+        }
         //
+        if ($quiz->delete()) {
+            return response()->json([
+                'icon' => 'success',
+                'title' => 'Deleted',
+                'text' => 'Quiz romved successfully.',
+            ], Response::HTTP_OK);
+        }else {
+            return response()->json([
+                'icon' => 'error',
+                'title' => 'Faild!',
+                'text' => 'Quiz faild to romve.',
+            ], Response::HTTP_OK);
+        }
     }
 }

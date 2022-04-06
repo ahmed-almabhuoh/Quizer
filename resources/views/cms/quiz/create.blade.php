@@ -123,7 +123,7 @@
                 .then(function(response) {
                     // handle success
                     console.log(response);
-                    // window.location.href = '/cms/admin/quizzes';
+                    window.location.href = '/cms/admin/quizzes';
                     document.getElementById('create-form').reset();
                     toastr.success(response.data.message);
                 })
