@@ -296,6 +296,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
                             </a>
                             <ul class="nav nav-treeview" style="display: none;">
                                 <li class="nav-item">
+                                    <a href="{{ route('quizzes.create') }}" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>{{ __('cms.create') }}</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
                                     <a href="{{ route('quizzes.index') }}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>{{ __('cms.index') }}</p>

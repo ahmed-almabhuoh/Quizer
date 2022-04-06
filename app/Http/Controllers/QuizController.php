@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Quiz;
+use App\Models\Room;
+use Carbon\Carbon;
+use Dotenv\Validator;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class QuizController extends Controller
 {
@@ -18,8 +22,8 @@ class QuizController extends Controller
             ['teacher_id', auth('teacher')->user()->id],
             ['active', 1],
         ])
-        ->with('room')
-        ->get();
+            ->with('room')
+            ->get();
         //
         return response()->view('cms.quiz.index', [
             'quizzes' => $quizzes,
@@ -34,6 +38,13 @@ class QuizController extends Controller
     public function create()
     {
         //
+        $rooms = Room::where([
+            ['active', 1],
+            ['teacher_id', auth('teacher')->user()->id]
+        ])->get();
+        return response()->view('cms.quiz.create', [
+            'rooms' => $rooms,
+        ]);
     }
 
     /**
@@ -44,7 +55,37 @@ class QuizController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator($request->all(), [
+            'title' => 'required|string|min:3|max:50',
+            'mark' => 'required|integer|min:1',
+            'time_in_minutes' => 'required|integer|min:1',
+            'time' => 'required|string|min:10',
+            'room' => 'required|integer|exists:rooms,id',
+            'active' => 'required|boolean',
+        ]);
         //
+        if (!$validator->fails()) {
+            $room = Room::find($request->get('room'));
+            $quiz = new Quiz();
+            $quiz->title = $request->get('title');
+            $quiz->description = $request->get('description');
+            $quiz->mark = $request->get('mark');
+            $quiz->time = $request->get('time_in_minutes');
+            $quiz->active = $request->get('active');
+            $quiz->teacher_id = auth('teacher')->user()->id;
+            $quiz->from = date_format(Carbon::make($request->get('time')),'y-m-d H:i');
+            $quiz->room_id = $request->get('room');
+            $quiz->percentage = 0.0;
+            $isSaved = $quiz->save();
+
+            return response()->json([
+                'message' => $isSaved ? 'Quiz added successfully to ' . $room->name . ' room.' : 'Faild to add quiz to the room.',
+            ], $isSaved ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+        }else {
+            return response()->json([
+                'message' => $validator->getMessageBag()->first(),
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**

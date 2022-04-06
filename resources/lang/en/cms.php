@@ -37,4 +37,6 @@ return [
     'title' => 'Title',
     'mark' => 'Mark',
     'for_room' => 'For Room',
+    'create_quiz' => 'Create Quiz',
+    'time_in_minutes' => 'Time in minutes',
 ];
