@@ -40,6 +40,10 @@ Route::prefix('/cms/admin')->middleware('auth:teacher')->group(function () {
     // Add questions to quiz
     Route::get('/quiz/{id}/add-questions', [QuizController::class, 'addQuestionToQuiz'])->name('add.questions');
 
+    // Add student to room
+    Route::get('/add-student-to-room/{id}/room', [RoomController::class, 'showAddStudentToClass'])->name('add.student.to.room');
+    Route::post('/add-student-to-room/{room}/room', [RoomController::class, 'addStudentToClass']);
+
     // Change password
     Route::get('/change-password', [AuthController::class, 'showChangePassword'])->name('change.password');
     Route::post('/change-password', [AuthController::class, 'changePassword']);

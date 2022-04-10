@@ -21,4 +21,8 @@ class Teacher extends Authenticatable
     public function students () {
         return $this->hasMany(Student::class, 'teacher_id', 'id');
     }
+
+    public function admin () {
+        return $this->belongsTo(Admin::class, 'admin_id', 'id');
+    }
 }

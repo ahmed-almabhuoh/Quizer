@@ -53,6 +53,9 @@
                                                     <button type="button" onclick="confirmDestroy({{$room->id}}, this)" class="btn btn-danger">
                                                         <i class="fas fa-trash"></i>
                                                     </button>
+                                                    <a href="{{ route('add.student.to.room', $room->id) }}" class="btn btn-info">
+                                                        Student
+                                                    </a>
                                                 </div>
                                             </td>
                                         </tr>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Room;
+use App\Models\Student;
+use App\Models\StudentClass;
 use Dotenv\Validator;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -160,6 +162,65 @@ class RoomController extends Controller
                 'icon' => 'error',
                 'title' => 'Faild',
                 'text' => 'Faild to delete room!',
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function showAddStudentToClass ($id) {
+        $room = Room::where([
+            ['id', $id],
+            ['teacher_id', auth('teacher')->user()->id],
+            ['active', 1],
+        ])->first();
+        $srudent_class = StudentClass::where([
+            ['room_id', $room->id],
+        ])->get();
+        $students = Student::where([
+            ['teacher_id', auth('teacher')->user()->id],
+            ['active', 1],
+        ])->get();
+        return response()->view('cms.room.add-students', [
+            'room' => $room,
+            'srudent_class' => $srudent_class,
+            'students' => $students,
+        ]);
+    }
+
+    public function addStudentToClass (Request $request, Room $room) {
+        $validator = Validator($request->all(), [
+            'student_id' => 'required|integer|exists:students,id',
+        ]);
+        //
+        // Remove student from class if exists
+        if (StudentClass::where([
+            ['student_id', $request->get('student_id')],
+            ['room_id', $room->id]
+        ])->exists()) {
+            if (StudentClass::where([
+                ['student_id', $request->get('student_id')],
+                ['room_id', $room->id]
+            ])->delete()) {
+                return response()->json([
+                    'message' => 'Reomved successfully',
+                ], Response::HTTP_OK);
+            }else {
+                return response()->json([
+                    'message' => 'Faild to reomove',
+                ], Response::HTTP_BAD_REQUEST);
+            }
+        }
+        if (!$validator->fails()) {
+            $student_class = new StudentClass();
+            $student_class->student_id = $request->get('student_id');
+            $student_class->room_id = $room->id;
+            $isSaved = $student_class->save();
+
+            return response()->json([
+                'message' => $isSaved ? 'Student added successfully' : 'Faild to add student to class',
+            ], $isSaved ? Response::HTTP_OK : Response::HTTP_BAD_REQUEST);
+        }else {
+            return response()->json([
+                'message' => $validator->getMessageBag()->first(),
             ], Response::HTTP_BAD_REQUEST);
         }
     }
